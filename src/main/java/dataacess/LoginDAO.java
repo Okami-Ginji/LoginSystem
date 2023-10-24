@@ -5,15 +5,20 @@
 package dataacess;
 
 import common.Library;
+import java.util.LinkedList;
+import java.util.List;
+import model.User;
 import java.util.Locale;
 
 
 public class LoginDAO {  
     private static LoginDAO instance = null;
     Library l;
+    List<User> userList;
 
     public LoginDAO() {
         l = new Library();
+        userList = new LinkedList<>();
     }
 
     public static LoginDAO Instance() {
@@ -32,16 +37,19 @@ public class LoginDAO {
         int accountNumber = l.checkInputAccount(language);
         l.getWordLanguage(language, "enterPassword");
         String passString = l.checkInputPassword(language);
+        System.out.print("Captcha: ");
         String captchaGenerated = l.generateCaptchaText();
+        System.out.println(captchaGenerated);
         while (true) {
             if (l.checkInputCaptcha(captchaGenerated, language)) {
                 l.getWordLanguage(language, "loginSuccess");
                 System.out.println();
+                userList.add(new User(accountNumber, passString, captchaGenerated));
                 return;
             } else {
                 l.getWordLanguage(language, "errCaptchaIncorrect");
-                System.out.println();
+                System.out.println("");
             }
-        }
+        }       
     }
 }

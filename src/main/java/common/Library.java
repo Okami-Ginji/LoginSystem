@@ -35,25 +35,6 @@ public class Library {
         return a;
     }
     
-//    public int getIntNoLimit(String promt) {
-//        int a = -1;
-//        while (true) {
-//            System.out.print(promt + ": ");
-//            try {
-//                String s = sc.nextLine();
-//                a = Integer.parseInt(s);
-//                return a;
-//            } catch (Exception e) {
-//                System.out.println("Invalid input!!!");
-//            }
-//        }
-//    }
-
-//    public String getString(String mes){
-//        System.out.print(mes);
-//        return sc.nextLine();
-//    }
-    
     public double checkInputDouble(String promt) {
         //loop until user input correct
         while (true) {
@@ -146,6 +127,7 @@ public class Library {
             }
             getWordLanguage(language, "errCheckInputAccount");
             System.out.println();
+            getWordLanguage(language, "enterAccountNumber");
         }
     }
 
@@ -156,6 +138,7 @@ public class Library {
             if (isValidPassword(result, language)) {
                 return result;
             }
+            getWordLanguage(language, "enterPassword");
         }
     }
 
@@ -183,23 +166,11 @@ public class Library {
         }
         return true;
     }
-
-    public boolean checkInputCaptcha(String captchaGenerated, Locale language) {
-        System.out.println(captchaGenerated);
-        getWordLanguage(language, "enterCaptcha");
-        String captchaInput = checkInputString(language);
-        for (int i = 0; i < captchaInput.length(); i++) {
-            if (!captchaGenerated.contains(Character.toString(captchaInput.charAt(i)))) {
-                return false;
-            }
-        }
-        return true;
-    }
     
     public void getWordLanguage(Locale curLocate, String key) {
         ResourceBundle words = ResourceBundle.getBundle("Language/" + curLocate, curLocate);
         String value = words.getString(key);
-        System.out.printf(value);
+        System.out.print(value);
     }
     
     private final char[] chars = {'1', 'A', 'a', 'B', 'b', 'C',
@@ -210,7 +181,6 @@ public class Library {
         'Y', 'y', 'Z', 'z', '9'};
     
     public String generateCaptchaText() {
-        String randomStrValue = "";
         final int LENGTH = 6;
         StringBuilder sb = new StringBuilder();
         int index = 0;
@@ -219,5 +189,16 @@ public class Library {
             sb.append(chars[index]);
         }
         return sb.toString();
+    }
+    
+    public boolean checkInputCaptcha(String captchaGenerated, Locale language) {
+        getWordLanguage(language, "enterCaptcha");
+        String captchaInput = checkInputString(language);
+        for (int i = 0; i < captchaInput.length(); i++) {
+            if (!captchaGenerated.contains(Character.toString(captchaInput.charAt(i)))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
